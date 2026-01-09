@@ -1,0 +1,44 @@
+openapi: 3.0.3
+
+info:
+  title: Koa API
+  description: Default OpenAPI specification for a Koa.js API using koa-oas3
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8081
+    description: Local development server
+
+tags:
+  - name: Health
+    description: Health check endpoints
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns API status
+      operationId: getHealth
+      responses:
+        '200':
+          description: API is running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        uptime:
+          type: number
+          example: 12345
+      required:
+        - status

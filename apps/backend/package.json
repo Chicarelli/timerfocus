@@ -14,7 +14,9 @@
   "packageManager": "pnpm@10.26.2",
   "dependencies": {
     "koa": "^3.1.1",
-    "koa-bodyparser": "^4.4.1"
+    "koa-bodyparser": "^4.4.1",
+    "koa-oas3": "^3.2.0",
+    "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/koa": "^3.0.1",
