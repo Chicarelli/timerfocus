@@ -1,31 +1,34 @@
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 import { oas } from 'koa-oas3';
-
 import { fileURLToPath } from 'url'
 import path from 'path'
+import { routes } from './controller/routes.ts';
+import Router from '@koa/router';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 async function main() {
    const app = new Koa();
+   const router = new Router();
 
    app.use(bodyParser());
+
+
+   routes.forEach((route) => {
+      router[route.method](route.route, route.handler);
+   })
+
+   app.use(router.routes()).use(router.allowedMethods())
 
    const oasMw = await oas({
       file: `${__dirname}/../openapi.yaml`,
       endpoint: '/openapi.json',
-      uiEndpoint: '/'
+      uiEndpoint: '/docs'
    })
-
    app.use(oasMw);
-
-   app.use(async ctx => {
-      ctx.body = { "hello": "world" };
-   })
-
-   app.listen(8081);
+   app.listen(3000, () => console.log(`running 3000`));
 }
 
 main().catch(err => {

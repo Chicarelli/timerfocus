@@ -6,7 +6,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:8081
+  - url: http://localhost:3000
     description: Local development server
 
 tags:
@@ -14,6 +14,40 @@ tags:
     description: Health check endpoints
 
 paths:
+  /user/{id}/cycle-config:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get: 
+      tags: 
+        - Cycle Config
+      summary: Users Cycle config
+      description: Return the user cycle config
+      operationId: getUserCycleConfig
+      responses:
+        '200': 
+          description: Returning user cycle config
+          content: 
+            application/json:
+              schema:
+                type: object
+    post: 
+      tags: 
+        - Cycle Config
+      summary: Users Cycle config
+      description: Return the user cycle config
+      operationId: editUserCycleConfig
+      responses:
+        '200': 
+          description: Returning user cycle config
+          content: 
+            application/json:
+              schema:
+                type: object
+          
   /health:
     get:
       tags:
