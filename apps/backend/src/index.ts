@@ -15,11 +15,10 @@ async function main() {
 
    app.use(bodyParser());
 
-
    routes.forEach((route) => {
       router[route.method](route.route, route.handler);
    })
-
+   
    app.use(router.routes()).use(router.allowedMethods())
 
    const oasMw = await oas({
@@ -28,7 +27,7 @@ async function main() {
       uiEndpoint: '/docs'
    })
    app.use(oasMw);
-   app.listen(3000, () => console.log(`running 3000`));
+   app.listen(8080, () => console.log(`running 8080`));
 }
 
 main().catch(err => {

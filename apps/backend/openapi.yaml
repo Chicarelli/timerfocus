@@ -47,6 +47,52 @@ paths:
             application/json:
               schema:
                 type: object
+  /user/{id}/cycle/start:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+        - Cycles
+      summary: Cycle start event
+      description: It creates a cycle and start it.
+      operationId: startCycle
+      responses:
+        '201':
+          description: Cycle created
+          content:
+            application/json:
+              schema:
+                type: object
+  /user/{id}/cycle/{cycle_id}/events:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: cycle_id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      tags:
+        - Cycles
+      summary: Events of a cycle
+      description: It registers the possible events of a cycle
+      operationId: eventsCycle
+      responses:
+        '200':
+          description: Event registered
+          content:
+            application/json:
+              schema:
+                type: object
+
           
   /health:
     get:
