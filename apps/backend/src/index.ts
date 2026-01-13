@@ -16,7 +16,12 @@ async function main() {
    app.use(bodyParser());
 
    routes.forEach((route) => {
-      router[route.method](route.route, route.handler);
+
+      if (route.validation) {
+         router[route.method](route.route, route.validation, route.handler);
+      } else {
+         router[route.method](route.route, route.handler);
+      }
    })
    
    app.use(router.routes()).use(router.allowedMethods())
