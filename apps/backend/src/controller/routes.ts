@@ -1,6 +1,7 @@
 
 import type { Context } from 'koa';
 import * as z from 'zod';
+import { getUserCycleConfig } from '../application/getUserCycleConfig';
 
 const User = z.object({
     name: z.string().nonoptional()
@@ -62,9 +63,12 @@ async function validate(object: z.ZodObject) {
 }
 
 async function getUserConfigHandler(ctx: Context, next: any) {
-    const body = ctx.request.body;
-    console.log(body);
-    ctx.body = { result: "get user config was successfull" }
+    const id = ctx.params.id;
+
+    console.log(`Searching cycle config from user ${id}`);
+    const result = await getUserCycleConfig.apply(id);
+    
+    ctx.body = result;
     await next();
 }
 

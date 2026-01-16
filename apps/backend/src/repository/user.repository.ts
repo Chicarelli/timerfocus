@@ -20,3 +20,6 @@ class UserRepository {
         return user || null
     }
 }
+
+
+export const userRepository = new UserRepository();

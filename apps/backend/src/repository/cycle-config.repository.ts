@@ -31,4 +31,4 @@ class CycleConfigRepository {
 
 }
 
-export const cycleConfigRepostiroy = new CycleConfigRepository();
+export const cycleConfigRepository = new CycleConfigRepository();
