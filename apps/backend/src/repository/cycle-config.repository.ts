@@ -24,7 +24,7 @@ class CycleConfigRepository {
 
     async editUserCycleConfig(newCycle: CycleConfig) {
         this.collection.forEach(cycle => {
-            if (cycle.id === newCycle.id) {
+            if (cycle.userId === newCycle.userId) {
                 Object.assign(cycle, newCycle);
             }
         })
