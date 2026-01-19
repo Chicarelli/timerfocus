@@ -40,6 +40,13 @@ paths:
       summary: Users Cycle config
       description: Return the user cycle config
       operationId: editUserCycleConfig
+      requestBody:
+        description: New User Cycle
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CycleConfig"
       responses:
         '200': 
           description: Returning user cycle config
@@ -111,6 +118,38 @@ paths:
 
 components:
   schemas:
+    CycleConfig:
+      type: object
+      properties:
+        userId: 
+          type: string
+          example: a5fa431a-08fb-4ac1-9a9a-f8f1058e55a7
+        mode:
+          type: string
+          enum: [default, learning]
+        workTime:
+          type: number
+          example: 25
+        thoughfulWork:
+          type: number
+          example: 3
+        shortBreak:
+          type: number
+          example: 5
+        longBreak:
+          type: number
+          example: 10
+        shortIntervalCounts:
+          type: number
+          example: 2
+      required:
+        - userId
+        - mode
+        - workTime
+        - thoughfulWork
+        - shortBreak
+        - longBreak
+        - shortIntervalCounts
     HealthResponse:
       type: object
       properties:

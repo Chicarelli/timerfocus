@@ -10,6 +10,8 @@ class CycleRepository {
     async createCycle(newCycle: Cycle): Promise<Cycle> {
         this.collection.push(newCycle);
 
+        console.log(this.collection);
+
         return newCycle;
     }
 
@@ -25,6 +27,8 @@ class CycleRepository {
                 Object.assign(cycle, updatedCycle);
             }
         })
+
+        console.log(this.collection);
 
         return updatedCycle;
     }

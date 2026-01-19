@@ -11,6 +11,9 @@ class UserRepository {
 
     async createUser(newUser: User): Promise<User> {
         this.collection.push(newUser);
+        
+        console.log(this.collection);
+
         return newUser;
     }
 

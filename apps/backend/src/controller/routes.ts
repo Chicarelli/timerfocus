@@ -2,10 +2,7 @@
 import type { Context } from 'koa';
 import * as z from 'zod';
 import { getUserCycleConfig } from '../application/getUserCycleConfig';
-
-const User = z.object({
-    name: z.string().nonoptional()
-})
+import { CycleConfigValidator } from './validations/editCycleConfig.validation';
 
 export const routes = [
     {
@@ -16,7 +13,7 @@ export const routes = [
     {
         method: "post" as const,
         route: "/user/:id/cycle-config",
-        validation: await validate(User),
+        validation: await validate(CycleConfigValidator),
         handler: editUserConfigHandler
     },
     {
