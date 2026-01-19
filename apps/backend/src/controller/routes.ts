@@ -31,7 +31,6 @@ export const routes = [
 async function validate(object: z.ZodObject) {
     return async function (ctx: Context, next: any) {
         const body = ctx.request.body;
-
         const data = object.safeParse(body);
 
         if (!data.success && data.error?.issues) {

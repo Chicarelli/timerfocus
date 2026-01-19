@@ -1,7 +1,6 @@
 import { nanoid } from "nanoid";
 
 export class CycleConfig {
-    id: string = "";
     userId: string = "";
     mode: "default" |  "learning" = "default";
     workTime: number = 25;
@@ -9,8 +8,4 @@ export class CycleConfig {
     shortBreakTime: number = 5;
     longBreakTime: number = 15;
     shortIntervalCount: number = 4;
-
-    generateId() {
-        this.id = nanoid(8);
-    }
 }
