@@ -6,7 +6,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:8080
+  - url: /
     description: Local development server
 
 tags:
@@ -121,35 +121,31 @@ components:
     CycleConfig:
       type: object
       properties:
-        userId: 
-          type: string
-          example: a5fa431a-08fb-4ac1-9a9a-f8f1058e55a7
         mode:
           type: string
           enum: [default, learning]
         workTime:
           type: number
           example: 25
-        thoughfulWork:
+        thoughfulWorkTime:
           type: number
           example: 3
-        shortBreak:
+        shortBreakTime:
           type: number
           example: 5
-        longBreak:
+        longBreakTime:
           type: number
           example: 10
-        shortIntervalCounts:
+        shortIntervalCount:
           type: number
           example: 2
       required:
-        - userId
         - mode
         - workTime
-        - thoughfulWork
-        - shortBreak
-        - longBreak
-        - shortIntervalCounts
+        - thoughfulWorkTime
+        - shortBreakTime
+        - longBreakTime
+        - shortIntervalCount
     HealthResponse:
       type: object
       properties:

@@ -13,7 +13,6 @@ class CycleConfigRepository {
         if (foundUserConfig) throw new Error("This user already have a config");
 
         this.collection.push(newConfig);
-        console.log(this.collection);
         return newConfig;
     }
 
@@ -28,8 +27,6 @@ class CycleConfigRepository {
                 Object.assign(cycle, newCycle);
             }
         })
-
-        console.log(this.collection)
     }
 
 }

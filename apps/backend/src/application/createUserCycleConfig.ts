@@ -12,7 +12,6 @@ class CreateUserCycleConfig {
 
     async apply(command: string): Promise<CycleConfig> {
         const newCycle = new CycleConfig();
-        newCycle.generateId();
         newCycle.userId = command;
 
         return await this.cycleConfigRepository.createConfig(newCycle);

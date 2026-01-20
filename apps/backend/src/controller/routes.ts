@@ -3,6 +3,9 @@ import type { Context } from 'koa';
 import * as z from 'zod';
 import { getUserCycleConfig } from '../application/getUserCycleConfig';
 import { CycleConfigValidator } from './validations/editCycleConfig.validation';
+import { editUserCycleConfig } from '../application/editUserCycleConfig';
+import { CycleConfig } from '../domain/CycleConfig';
+import { cycleConfigRepository } from '../repository/cycle-config.repository';
 
 export const routes = [
     {
@@ -70,9 +73,20 @@ async function getUserConfigHandler(ctx: Context, next: any) {
 
 async function editUserConfigHandler(ctx: Context, next: any) {
     const body = ctx.request.body;
+    const id = ctx.params.id;
 
-    console.log(body);
+    if (!id) return;
 
-    ctx.body = { result: "edit user config was successfull" }
+    const cycle = new  CycleConfig();
+    cycle.userId = id
+    cycle.mode = body.mode;
+    cycle.workTime = body.workTime;
+    cycle.thoughfulWorkTime = body.thoughfulWorkTime;
+    cycle.shortBreakTime = body.shortBreakTime;
+    cycle.longBreakTime = body.longBreakTime;
+    cycle.shortIntervalCount = body.shortIntervalCount;
+    const result = await editUserCycleConfig.apply(cycle)
+
+    ctx.body = result
     await next();
 }
