@@ -99,10 +99,21 @@ paths:
         type: string
     post:
       tags:
-        - Cycles
+        - Cycle
       summary: Events of a cycle
       description: It registers the possible events of a cycle
       operationId: eventsCycle
+      requestBody:
+        description: "Register a new event for a cycle"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [heartbeat, pause, unpause, end]
       responses:
         '200':
           description: Event registered
@@ -110,6 +121,38 @@ paths:
             application/json:
               schema:
                 type: object
+                properties:
+                  id:
+                    type: string
+                    example: a5fa431a-08fb-4ac1-9a9a-f8f1058e55a7
+                  userId:
+                    type: string
+                    example: a5fa431a-08fb-4ac1-9a9a-f8f1058e55a7
+                  type: 
+                    type: string
+                    enum: [default, learning]
+                    example: "default"
+                  startedAt:
+                    type: string
+                    format: date-time
+                  endedAt:
+                    type: string
+                    format: date-time
+                  lastHeartbeatAt:
+                    type: string
+                    format: date-time
+                  acumulateSeconds:
+                    type: number
+                  maxAllowedSeconds:
+                    type: number
+                  status:
+                    type: string
+                    enum: [running, pauses, end]
+                  pauses:
+                    type: number
+                  endedReason:
+                    type: string
+                    enum: [manual, timeout, max_time_reached, new_cycle_started]
 
           
   /health:

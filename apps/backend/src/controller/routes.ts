@@ -5,9 +5,10 @@ import { getUserCycleConfig } from '../application/getUserCycleConfig';
 import { CycleConfigValidator } from './validations/editCycleConfig.validation';
 import { editUserCycleConfig } from '../application/editUserCycleConfig';
 import { CycleConfig } from '../domain/CycleConfig';
-import { cycleConfigRepository } from '../repository/cycle-config.repository';
 import { StartCycleValidator } from './validations/startCycle.validation';
 import { startCycle } from '../application/cycles/startCycle';
+import { CycleEventValidator } from './validations/cycleEvent.validation';
+import { newEventCycle } from '../application/cycles/newEventCycle';
 
 export const routes = [
     {
@@ -30,7 +31,8 @@ export const routes = [
     {
         method: 'post' as const,
         route: '/user/:id/cycle/:cycle_id/events',
-        handler: () => { }
+        validation: await validate(CycleEventValidator),
+        handler: cycleEventHandler
     }
 ]
 
@@ -106,4 +108,17 @@ async function startCycleHandler(ctx: Context, next: any) {
     ctx.status = 201;
 
     await next();
+}
+
+async function cycleEventHandler(ctx: Context, next: any) {
+    const {id, cycle_id: cycleId} = ctx.params;
+    const {type} = ctx.request.body;
+
+    console.log(id, cycleId, type);
+
+    if (!id || !cycleId || !type) return;
+
+    const result = await newEventCycle.apply(cycleId, type);
+
+    ctx.body = result;
 }
