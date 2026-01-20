@@ -56,7 +56,7 @@ async function validate(object: z.ZodObject) {
             ctx.body = {
                 error: true,
                 errors: {
-                    message: 'Requisição inválida, tente novamente'
+                    message: 'Invalid request, try again later'
                 }
             }
             return
