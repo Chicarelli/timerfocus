@@ -1,5 +1,6 @@
 import { CycleConfig } from "../domain/CycleConfig";
 import { cycleConfigRepository } from "../repository/cycle-config.repository";
+import { NotFoundException } from "./errors/NotFoundException";
 
 
 class EditUserCycleConfig {
@@ -12,9 +13,7 @@ class EditUserCycleConfig {
     async apply(newCycle: CycleConfig) {
         const foundCycle = await this.cycleConfigRepository.findUserConfig(newCycle.userId);
         if (!foundCycle) {
-            return {
-                message: "Not found",
-            }
+            throw new NotFoundException("Config not found for this user");
         }
 
         return await this.cycleConfigRepository.editUserCycleConfig(newCycle);

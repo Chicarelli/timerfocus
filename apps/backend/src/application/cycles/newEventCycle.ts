@@ -2,6 +2,8 @@ import { Cycle } from "../../domain/Cycle";
 import { cycleConfigRepository } from "../../repository/cycle-config.repository";
 import { cycleRepository } from "../../repository/cycle.repository";
 import { differenceInSeconds } from 'date-fns';
+import { InvalidCycleException } from "../errors/InvalidCycleException";
+import { NotFoundException } from "../errors/NotFoundException";
 
 
 class NewEventCycle {
@@ -17,9 +19,7 @@ class NewEventCycle {
         const cycle = await this.cycleRepository.findCycle(cycleId);
 
         if (!cycle) {
-            return {
-                error: "Cycle not found"
-            }
+            throw new NotFoundException("Cycle not found")
         }
 
         if (event === "heartbeat") {
@@ -38,17 +38,13 @@ class NewEventCycle {
             return await this.endEvent(cycle);
         }
 
-        return {
-                error: 'Ocorreu um erro geral ao tentar registrar o evento'
-            }
+        throw new InvalidCycleException("Invalid event");
     }
 
     async heartbeatEvent(cycle: Cycle): Promise<Cycle | { error: string }> {
         const now = new Date();
         if (cycle.status !== "running" || differenceInSeconds(now, cycle.lastHeartbeatAt as Date) > 8) {
-            return {
-                error: 'Ocorreu um erro ao tentar registrar o evento de heartbeat'
-            }
+            throw new InvalidCycleException("Invalid event for this cycle")
         }
 
         cycle.accumulateSeconds = cycle.accumulateSeconds + 5;
@@ -67,9 +63,7 @@ class NewEventCycle {
     async pauseEvent(cycle: Cycle): Promise<Cycle | { error: string }> {
         const now = new Date();
         if (cycle.status !== "running") {
-            return {
-                error: 'Ocorreu um erro ao tentar registrar o evento de pause' 
-            }
+            throw new InvalidCycleException("Invalid event for this cycle")
         }
 
         cycle.status = "paused";
@@ -91,9 +85,7 @@ class NewEventCycle {
         const now = new Date();
 
         if (cycle.status !== "paused") {
-            return {
-                error: 'Ocorreu um erro ao tentar registrar o evento de unpause'
-            }
+          throw new InvalidCycleException("Invalid event for this cycle")
         }
 
         cycle.status = "running";
@@ -106,9 +98,7 @@ class NewEventCycle {
         const now = new Date();
 
         if (cycle.status === "ended") {
-            return {
-                error: 'Ocorreu um erro ao tentar registrar o evento de end'
-            }
+            throw new InvalidCycleException("Invalid event for this cycle")
         }
 
         cycle.status = "ended";

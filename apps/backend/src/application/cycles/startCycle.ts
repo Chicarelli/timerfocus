@@ -1,6 +1,7 @@
 import { Cycle } from "../../domain/Cycle";
 import { cycleConfigRepository } from "../../repository/cycle-config.repository";
 import { cycleRepository } from "../../repository/cycle.repository";
+import {NotFoundException} from "../errors/NotFoundException";
 
 
 class StartCycle {
@@ -16,9 +17,7 @@ class StartCycle {
         const cycleConfig = await this.userCycleConfig.findUserConfig(userId);
 
         if (!cycleConfig) {
-            return {
-                error: "Cycle config not found for this user"
-            }
+            throw new NotFoundException("Cycle config not found for this user");
         }
 
         //"check if user has a running cycle to ended"

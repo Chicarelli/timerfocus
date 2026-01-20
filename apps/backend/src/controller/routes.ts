@@ -44,20 +44,14 @@ async function validate(object: z.ZodObject) {
         if (!data.success && data.error?.issues) {
             ctx.status = 422,
                 ctx.body = {
-                    error: true,
-                    errors: {
-                        [data.error?.issues[0].path[0]]: data.error?.issues[0].message
-                    }
+                    message: `${[data.error?.issues[0].path[0]]} - ${data.error?.issues[0].message}`
                 }
             return
         }
         if (!data.success) {
             ctx.status = 422
             ctx.body = {
-                error: true,
-                errors: {
-                    message: 'Invalid request, try again later'
-                }
+                message: 'Invalid request'
             }
             return
         }
@@ -100,25 +94,17 @@ async function startCycleHandler(ctx: Context, next: any) {
     const id = ctx.params.id;
 
     const { type } = ctx.request.body;
-
-    if (!id) return;
-
     const result = await startCycle.apply(id, type);
-    ctx.body = {id: result.id}
+    ctx.body = { id: result.id }
     ctx.status = 201;
 
     await next();
 }
 
 async function cycleEventHandler(ctx: Context, next: any) {
-    const {id, cycle_id: cycleId} = ctx.params;
-    const {type} = ctx.request.body;
-
-    console.log(id, cycleId, type);
-
-    if (!id || !cycleId || !type) return;
+    const { id, cycle_id: cycleId } = ctx.params;
+    const { type } = ctx.request.body;
 
     const result = await newEventCycle.apply(cycleId, type);
-
     ctx.body = result;
 }

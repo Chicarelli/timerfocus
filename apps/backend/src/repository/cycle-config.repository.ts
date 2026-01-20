@@ -27,6 +27,8 @@ class CycleConfigRepository {
                 Object.assign(cycle, newCycle);
             }
         })
+
+        return newCycle;
     }
 
 }
