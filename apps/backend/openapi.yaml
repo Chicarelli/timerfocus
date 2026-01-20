@@ -63,17 +63,28 @@ paths:
         type: string
     post:
       tags:
-        - Cycles
+        - Cycle
       summary: Cycle start event
       description: It creates a cycle and start it.
       operationId: startCycle
+      requestBody:
+        description: Create a new user cycle
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCycle"
       responses:
         '201':
-          description: Cycle created
+          description: Create a cycle
           content:
             application/json:
               schema:
                 type: object
+                properties:
+                  id:
+                    type: string
+                    example: a5fa431a-08fb-4ac1-9a9a-f8f1058e55a7
   /user/{id}/cycle/{cycle_id}/events:
     parameters:
     - name: id
@@ -118,6 +129,14 @@ paths:
 
 components:
   schemas:
+    CreateCycle:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [default, learning]
+      required:
+        - type
     CycleConfig:
       type: object
       properties:

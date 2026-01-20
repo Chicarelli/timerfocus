@@ -19,6 +19,12 @@ class CycleRepository {
         return foundCycle || null;
     }
 
+    async findByUserIdAndStatus(userId: string, status: Cycle["status"]): Promise<Cycle[]> {
+        const foundCycle = this.collection.filter(cycle => cycle.userId === userId && cycle.status === status);
+
+        return foundCycle
+    }
+
     async updateCycle(updatedCycle: Cycle): Promise<Cycle> {
         this.collection.forEach(cycle => {
             if (cycle.id === updatedCycle.id) {
@@ -29,3 +35,5 @@ class CycleRepository {
         return updatedCycle;
     }
 }
+
+export const cycleRepository = new CycleRepository();

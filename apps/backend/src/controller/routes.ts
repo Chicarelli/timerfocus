@@ -6,6 +6,8 @@ import { CycleConfigValidator } from './validations/editCycleConfig.validation';
 import { editUserCycleConfig } from '../application/editUserCycleConfig';
 import { CycleConfig } from '../domain/CycleConfig';
 import { cycleConfigRepository } from '../repository/cycle-config.repository';
+import { StartCycleValidator } from './validations/startCycle.validation';
+import { startCycle } from '../application/cycles/startCycle';
 
 export const routes = [
     {
@@ -21,12 +23,13 @@ export const routes = [
     },
     {
         method: 'post' as const,
-        route: 'user/:id/cycle/start',
-        handler: () => { }
+        route: '/user/:id/cycle/start',
+        validation: await validate(StartCycleValidator),
+        handler: startCycleHandler
     },
     {
         method: 'post' as const,
-        route: 'user/:id/cycle/:cycle_id/events',
+        route: '/user/:id/cycle/:cycle_id/events',
         handler: () => { }
     }
 ]
@@ -57,7 +60,7 @@ async function validate(object: z.ZodObject) {
             return
         }
 
-        next();
+        await next();
     }
 }
 
@@ -66,7 +69,7 @@ async function getUserConfigHandler(ctx: Context, next: any) {
 
     console.log(`Searching cycle config from user ${id}`);
     const result = await getUserCycleConfig.apply(id);
-    
+
     ctx.body = result;
     await next();
 }
@@ -77,7 +80,7 @@ async function editUserConfigHandler(ctx: Context, next: any) {
 
     if (!id) return;
 
-    const cycle = new  CycleConfig();
+    const cycle = new CycleConfig();
     cycle.userId = id
     cycle.mode = body.mode;
     cycle.workTime = body.workTime;
@@ -88,5 +91,19 @@ async function editUserConfigHandler(ctx: Context, next: any) {
     const result = await editUserCycleConfig.apply(cycle)
 
     ctx.body = result
+    await next();
+}
+
+async function startCycleHandler(ctx: Context, next: any) {
+    const id = ctx.params.id;
+
+    const { type } = ctx.request.body;
+
+    if (!id) return;
+
+    const result = await startCycle.apply(id, type);
+    ctx.body = {id: result.id}
+    ctx.status = 201;
+
     await next();
 }
