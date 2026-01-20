@@ -33,7 +33,7 @@ paths:
           content: 
             application/json:
               schema:
-                type: object
+                $ref: "#/components/schemas/CycleConfig"
     post: 
       tags: 
         - Cycle Config
@@ -53,7 +53,27 @@ paths:
           content: 
             application/json:
               schema:
+                $ref: "#/components/schemas/CycleConfig"
+        '404':
+          description: Config not found for this user
+          content: 
+            application/json:
+              schema:
                 type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Config not found for this user"
+        '422':
+          description: Invalid request
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid request"
   /user/{id}/cycle/start:
     parameters:
     - name: id
@@ -85,6 +105,26 @@ paths:
                   id:
                     type: string
                     example: a5fa431a-08fb-4ac1-9a9a-f8f1058e55a7
+        '422':
+          description: Invalid request
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid request"
+        '404':
+          description: Config not found for this user
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Config not found for this user"
   /user/{id}/cycle/{cycle_id}/events:
     parameters:
     - name: id
@@ -153,7 +193,26 @@ paths:
                   endedReason:
                     type: string
                     enum: [manual, timeout, max_time_reached, new_cycle_started]
-
+        '422':
+          description: Invalid request
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid request"
+        '404':
+          description: Config not found for this user
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Config not found for this user"
           
   /health:
     get:
