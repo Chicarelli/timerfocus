@@ -43,7 +43,11 @@ class NewEventCycle {
 
     async heartbeatEvent(cycle: Cycle): Promise<Cycle | { error: string }> {
         const now = new Date();
-        if (cycle.status !== "running" || differenceInSeconds(now, cycle.lastHeartbeatAt as Date) > 8) {
+        if (
+            cycle.status !== "running" || 
+            differenceInSeconds(now, cycle.lastHeartbeatAt as Date) > 8  ||
+            differenceInSeconds(now, cycle.lastHeartbeatAt as Date) < 3
+        ) {
             throw new InvalidCycleException("Invalid event for this cycle")
         }
 
