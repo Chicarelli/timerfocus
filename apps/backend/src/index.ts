@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 import { routes } from './controller/routes.ts';
 import Router from '@koa/router';
-import { NotFoundException } from './application/errors/NotFoundException.ts';
 import { AppError } from './domain/AppError.ts';
+import cors from "@koa/cors"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -14,6 +14,9 @@ const __dirname = path.dirname(__filename)
 async function main() {
    const app = new Koa();
    const router = new Router();
+
+   app.use(cors())
+
 
    app.use(bodyParser());
 

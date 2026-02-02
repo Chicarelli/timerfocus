@@ -1,10 +1,32 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import './App.css'
 import { Timer } from './components/Timer/Timer'
+import { getCycleConfig } from './services/Cycle';
 
 function App() {
   const [timer, setTimer] = useState<number>(25 * 60);
   const [status, setStatus] = useState<'idle' | 'running' | 'paused'>('idle');
+  const [cycle, setCycle] = useState<'work' | 'thoughfulWork' | 'shortBreak' | 'longBreak'>('work');
+  const [cycleConfig, setCycleConfig] = useState({
+    longBreakTime: 15,
+    mode: "default",
+    shortBreakTime: 5,
+    shortIntervalCount: 4,
+    thoughfulWorkTime: 25,
+    userId: "23a53c1e-5599-427b-850a-8bc960d17f32",
+    workTime: 25
+  });
+
+  useEffect(() => {
+    const fetchCycleConfig = async () => {
+      // Fetch cycle config for user
+      const data = await getCycleConfig(localStorage.getItem('userId') as string);
+      setCycleConfig(data);
+    }
+
+    fetchCycleConfig();
+
+  }, []);
 
   useEffect(() => {
     let interval = null;
